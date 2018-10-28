@@ -1,13 +1,26 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> |
-      <router-link to="/wave">Wave</router-link>
-    </div>
-    <router-view/>
+    <v-app>
+      <page-header />
+      <v-content>
+        <v-container>
+          <router-view />
+        </v-container>
+      </v-content>
+    </v-app>
   </div>
 </template>
+
+<script>
+import PageHeader from '@/components/Header.vue'
+
+export default {
+  name: 'App',
+  components: {
+    PageHeader
+  }
+}
+</script>
 
 <style>
 #app {
@@ -15,18 +28,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+  background-color: #DFF1F0;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+.v-content {
+  margin-top: 64px;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.danger-alert {
+  color: red;
+}
+
+a {
+  text-decoration: none;
 }
 </style>

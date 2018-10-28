@@ -17,9 +17,14 @@ export default new Router({
       component: Home
     },
     {
-      path: '/about',
-      name: 'about',
-      component: loadView('About')
+      path: '/login',
+      name: 'login',
+      component: loadView('Login')
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: loadView('Register')
     },
     {
       path: '/wave',
