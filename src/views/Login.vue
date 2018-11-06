@@ -1,6 +1,6 @@
 <template>
-  <v-layout>
-    <v-flex xs4 offset-xs4>
+  <v-layout justify-center>
+    <v-flex lg4 xl3>
       <div class="panel">
         <v-text-field
           label="Email"
@@ -56,7 +56,7 @@ export default {
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
         this.$router.push({
-          name: 'songs'
+          name: 'home'
         })
       } catch (error) {
         this.error = error.response.data.error

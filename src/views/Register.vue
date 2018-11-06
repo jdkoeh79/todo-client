@@ -1,55 +1,35 @@
 <template>
   <div>
-    <v-layout row>
+    <v-layout>
       <v-flex xs12>
         <h1>Sign up now for free!</h1>
       </v-flex>
     </v-layout>
-    <v-layout align-center>
-      <v-flex xs5 xl4 offset-xs1 offset-xl2 class="list">
-        <v-layout row wrap class="li">
-          <v-flex xs2>
-            <v-icon large align-center class="icon-color">group</v-icon>
-          </v-flex>
-          <v-flex xs10>
-            Form groups of co-workers or family members with shared To-Do's!
-          </v-flex>
+    <v-layout row wrap align-center justify-center>
+      <v-flex md6 offset-md1 xl4 offset-xl0 class="list">
+        <v-layout class="li">
+            <v-icon large class="icon">group</v-icon>
+            Form groups of co-workers or family members with shared To-Do's
         </v-layout>
-        <v-layout row wrap class="li">
-          <v-flex xs2>
-            <v-icon large class="icon-color">update</v-icon>
-          </v-flex>
-          <v-flex xs10 class="center">
-            Create and track re-accuring To-Do's!
-          </v-flex>
+        <v-layout class="li">
+            <v-icon large class="icon">update</v-icon>
+            Create and track re-accuring To-Do's
         </v-layout>
-        <v-layout row wrap class="li">
-          <v-flex xs2>
-            <v-icon large class="icon-color">playlist_add_check</v-icon>
-          </v-flex>
-          <v-flex xs10 class="center">
-            Create To-Do's with multiple sub-tasks!
-          </v-flex>
+        <v-layout class="li">
+            <v-icon large class="icon">playlist_add_check</v-icon>
+            Create To-Do's with multiple sub-tasks
         </v-layout>
-        <v-layout row wrap class="li">
-          <v-flex xs2>
-            <v-icon large class="icon-color">email</v-icon>
-          </v-flex>
-          <v-flex xs10>
-            Get E-mail reminders of To-Do's with approaching due dates!
-          </v-flex>
+        <v-layout class="li">
+            <v-icon large class="icon">email</v-icon>
+            Get E-mail reminders of To-Do's with approaching due dates
         </v-layout>
-        <v-layout row wrap class="li">
-          <v-flex xs2>
-            <v-icon large class="icon-color">poll</v-icon>
-          </v-flex>
-          <v-flex xs10>
-            Review your productivity on the dashboard!
-          </v-flex>
+        <v-layout class="li">
+            <v-icon large class="icon">poll</v-icon>
+            Review your productivity on the dashboard
         </v-layout>
       </v-flex>
 
-      <v-flex xs5 xl4 class="ml-4">
+      <v-flex lg4 xl3>
         <div class="panel">
           <form
             name="todo-registration"
@@ -138,35 +118,37 @@ export default {
 .list, .panel {
   padding: 20px;
   margin-top: 5vh;
+  max-width: 600px;
 }
 
 .panel {
   border-radius: 10px;
   background-color: #fff;
+  /* margin-left: 30px; */
 }
 
 .list {
   text-align: left;
   font-size: 18px;
   padding-right: 70px;
-  padding-left: 0;
+  /* padding-left: 0; */
 }
 
 .li {
   margin: 35px 0;
 }
 
-.icon-color, .li, h1 {
+.icon, .li, h1 {
   color: #124342;
 }
 
-.icon-color {
-  padding-top: 10%;
+.icon {
+  margin-right: 15px;
 }
 
-.center {
-  padding-top: 13px;
-}
+/* .center {
+  padding-top: 11px;
+} */
 
 .btn {
   margin: 50px 0 20px;
