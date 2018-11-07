@@ -3,7 +3,6 @@
     class="teal darken-1"
     fixed
     dark>
-    <v-toolbar-side-icon></v-toolbar-side-icon>
     <v-toolbar-title>
       <router-link
         :to="{
@@ -35,10 +34,65 @@
       <v-btn
         flat
         v-if="$store.state.isUserLoggedIn"
-        @click="logout"
-        :to="{name: 'register'}">
-          Log Out
+        :to="{name: 'todos'}">
+          My Todo's
       </v-btn>
+
+      <v-btn
+        flat
+        v-if="$store.state.isUserLoggedIn"
+        :to="{name: 'dashboard'}">
+          Dashboard
+      </v-btn>
+
+      <v-menu
+        open-on-hover
+        bottom
+        left
+        offset-y
+        open-delay="100"
+        close-delay="200"
+        v-if="$store.state.isUserLoggedIn">
+        <v-btn
+          slot="activator"
+          flat>
+          <v-icon medium>settings</v-icon>
+        </v-btn>
+
+        <v-list>
+          <v-list-tile
+            :to="{name: 'profile'}">
+            <v-icon class="menu-icon">account_box</v-icon>
+            <v-list-tile-title>
+              Edit Profile
+            </v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile
+            :to="{name: 'groups'}">
+            <v-icon class="menu-icon">people</v-icon>
+            <v-list-tile-title>
+              My Groups
+            </v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile
+            :to="{name: 'settings'}">
+            <v-icon class="menu-icon">settings</v-icon>
+            <v-list-tile-title>
+              Settings
+            </v-list-tile-title>
+          </v-list-tile>
+
+          <v-list-tile
+            @click="logout">
+            <v-icon class="menu-icon">power_settings_new</v-icon>
+            <v-list-tile-title>
+              Logout
+            </v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-toolbar-items>
   </v-toolbar>
 </template>
@@ -50,7 +104,7 @@ export default {
       this.$store.dispatch('setToken', null)
       this.$store.dispatch('setUser', null)
       this.$router.push({
-        name: 'home'
+        name: 'login'
       })
     }
   }
@@ -60,5 +114,9 @@ export default {
 <style scoped>
 .home {
   cursor: pointer;
+}
+
+.menu-icon {
+  padding-right: 10px;
 }
 </style>

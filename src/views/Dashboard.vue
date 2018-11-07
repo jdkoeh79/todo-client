@@ -6,8 +6,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  name: 'home'
+  name: 'Dashboard',
+  computed: {
+    ...mapState([
+      'isUserLoggedIn',
+      'user'
+    ])
+  }
 }
 </script>
 

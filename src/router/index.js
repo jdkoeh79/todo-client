@@ -30,6 +30,31 @@ export default new Router({
       path: '/wave',
       name: 'wave',
       component: loadView('Wave')
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: loadView('Dashboard')
+    },
+    {
+      path: '/todos',
+      name: 'todos',
+      component: loadView('Todos')
+    },
+    {
+      path: '/groups',
+      name: 'groups',
+      component: loadView('Groups')
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: loadView('Profile')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: loadView('Settings')
     }
   ]
 })
