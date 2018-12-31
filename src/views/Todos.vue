@@ -2,7 +2,10 @@
   <div>
 
     <todo-container
-      :todos="todos"
+      v-for="todo in todos"
+      :key="todo.id"
+      :todo="todo"
+      :depth="0"
     />
 
   </div>
@@ -16,6 +19,9 @@ export default {
   components: {
     TodoContainer
   },
+  props: [
+    'depth'
+  ],
   computed: {
     ...mapState([
       'isUserLoggedIn',
@@ -28,46 +34,93 @@ export default {
         {
           id: 1,
           parentId: null,
+          completed: false,
           title: 'Go grocery shopping',
+          dueDate: '1/6/2019',
           body: [
             {
               id: 2,
               parentId: 1,
+              completed: false,
               title: 'Walmart',
+              dueDate: null,
               body: [
                 {
                   id: 6,
                   parentId: 1,
+                  completed: true,
                   title: 'Cheese',
-                  body: ['American, Swiss']
+                  dueDate: null,
+                  body: [
+                    {
+                      completed: true,
+                      item: 'American'
+                    },
+                    {
+                      completed: true,
+                      item: 'Swiss'
+                    }
+                  ]
                 }
               ]
             },
             {
               id: 3,
               parentId: 1,
+              completed: false,
               title: 'Aldi',
-              body: ['Milk, Eggs']
+              dueDate: null,
+              body: [
+                {
+                  completed: false,
+                  item: 'Milk'
+                },
+                {
+                  completed: true,
+                  item: 'Eggs'
+                }
+              ]
             }
           ]
         },
         {
           id: 4,
           parentId: null,
+          completed: false,
           title: 'Makenna\'s teacher apointment',
-          body: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.']
+          dueDate: '2/14/2019',
+          body: [
+            {
+              completed: false,
+              item: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+            }
+          ]
         },
         {
           id: 5,
           parentId: null,
+          completed: false,
           title: 'Pick up rabbit feed',
-          body: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.']
+          dueDate: '1/4/2019',
+          body: [
+            {
+              completed: false,
+              item: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+            }
+          ]
         },
         {
           id: 6,
           parentId: null,
+          completed: false,
           title: 'Pay electric bill',
-          body: ['Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.']
+          dueDate: '1/21/2019',
+          body: [
+            {
+              completed: false,
+              item: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+            }
+          ]
         }
       ]
     }
