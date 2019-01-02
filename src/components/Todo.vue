@@ -150,7 +150,7 @@ export default {
   flex-grow: 0;
   padding-top: 12px;
   padding-right: 4px;
-  padding-left: 2px;
+  padding-left: 4px;
 }
 
 .todo-body {
