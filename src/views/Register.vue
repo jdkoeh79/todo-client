@@ -16,8 +16,8 @@
             Create and track re-accuring To-Do's
         </v-layout>
         <v-layout class="li">
-            <v-icon large class="icon">playlist_add_check</v-icon>
-            Create To-Do's with multiple sub-tasks
+            <v-icon large class="icon">format_list_bulleted</v-icon>
+            Add lists to your To-Do's
         </v-layout>
         <v-layout class="li">
             <v-icon large class="icon">email</v-icon>
