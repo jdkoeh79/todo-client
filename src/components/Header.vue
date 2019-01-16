@@ -50,14 +50,36 @@
         bottom
         left
         offset-y
+        min-width="200px"
         open-delay="100"
         close-delay="200"
-        v-if="$store.state.isUserLoggedIn">
-        <v-btn
+        v-if="$store.state.isUserLoggedIn"
+      >
+
+        <v-avatar
+          size="40px"
+          class="avatar"
           slot="activator"
-          flat>
-          <v-icon medium>settings</v-icon>
-        </v-btn>
+        >
+          <img
+            src="../../public/ProfilePhoto.jpg"
+            alt="Avatar"
+          >
+        </v-avatar>
+
+        <v-list two-line>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-action-text>
+                Logged in as
+              </v-list-tile-action-text>
+              <v-list-tile-title>
+                {{ user.firstName }} {{ user.lastName }}
+              </v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-divider></v-divider>
+        </v-list>
 
         <v-list>
           <v-list-tile
@@ -86,7 +108,9 @@
 
           <v-list-tile
             @click="logout">
-            <v-icon class="menu-icon">power_settings_new</v-icon>
+            <!-- <v-icon class="menu-icon">power_settings_new</v-icon> -->
+            <!-- <v-icon class="menu-icon">remove_circle</v-icon> -->
+            <v-icon class="menu-icon">cancel</v-icon>
             <v-list-tile-title>
               Logout
             </v-list-tile-title>
@@ -98,7 +122,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
+  data: () => {
+    return {
+      profilePic: null
+    }
+  },
+  computed: {
+    ...mapState([
+      'isUserLoggedIn',
+      'user'
+    ])
+  },
   methods: {
     logout () {
       this.$store.dispatch('setToken', null)
@@ -114,6 +151,10 @@ export default {
 <style scoped>
 .home {
   cursor: pointer;
+}
+
+.avatar {
+  margin-left: 10px;
 }
 
 .menu-icon {
