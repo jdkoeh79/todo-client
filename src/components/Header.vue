@@ -76,6 +76,9 @@
               <v-list-tile-title>
                 {{ user.firstName }} {{ user.lastName }}
               </v-list-tile-title>
+              <v-list-tile-title class="email">
+                {{ user.email }}
+              </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
@@ -159,5 +162,11 @@ export default {
 
 .menu-icon {
   padding-right: 10px;
+}
+
+.email {
+  font-size: .8em;
+  position: relative;
+  top: -5px;
 }
 </style>

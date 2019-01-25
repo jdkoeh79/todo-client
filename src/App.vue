@@ -31,8 +31,13 @@ export default {
   background-color: #DFF1F0;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 .v-content {
-  margin-top: 64px;
+  margin-top: 58px;
 }
 
 .danger-alert {

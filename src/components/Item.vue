@@ -1,0 +1,71 @@
+<template>
+  <div class="item">
+
+    <v-checkbox
+      height="0"
+      color="#00897b"
+      :label="item.name"
+      v-model="item.completed">
+    </v-checkbox>
+
+    <v-icon class="remove-button">close</v-icon>
+
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Item',
+  props: [
+    'item'
+  ]
+}
+</script>
+
+<style scoped>
+.item {
+  text-align: left;
+  padding: 5px;
+  margin: 0 10px;
+  display: flex;
+  flex-grow: 0;
+  cursor: pointer;
+}
+
+.row {
+flex-grow: 1;
+}
+
+.item:hover {
+  border-top: 1px solid rgb(176, 212, 200);
+  border-bottom: 1px solid rgb(176, 212, 200);
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+
+.item-name {
+  flex-grow: 3;
+  margin-top: 3px;
+}
+
+.remove-button {
+  flex-grow: 0;
+  padding-left: 10px;
+  padding-top: 4px;
+  font-size: 16px;
+}
+
+>>>.v-label {
+  padding-top: 2px;
+  color: black;
+}
+
+>>>.v-messages {
+  min-height: 0;
+}
+
+>>>.v-input--selection-controls {
+  padding-top: 0;
+  margin-top: 13px;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="white">
+  <div>
     <v-toolbar flat dense class="teal darken-1" dark>
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <slot name="action" />

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/Home'
+import store from '../store'
 
 Vue.use(Router)
 
@@ -9,12 +9,21 @@ function loadView (view) {
   return () => import(/* webpackChunkName: "view-[request]" */ `@/views/${view}.vue`)
 }
 
+function isAuthenticated (to, from, next) {
+  if (!store.state.isUserLoggedIn) {
+    to({ name: 'register'} )
+    next(false)
+  } else {
+    next()
+  }
+}
+
 export default new Router({
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      redirect: '/todos'
     },
     {
       path: '/login',
@@ -34,27 +43,32 @@ export default new Router({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: loadView('Dashboard')
+      component: loadView('Dashboard'),
+      beforeEnter: isAuthenticated
     },
     {
       path: '/todos',
       name: 'todos',
-      component: loadView('Todos')
+      component: loadView('Todos'),
+      beforeEnter: isAuthenticated
     },
     {
       path: '/groups',
       name: 'groups',
-      component: loadView('Groups')
+      component: loadView('Groups'),
+      beforeEnter: isAuthenticated
     },
     {
       path: '/profile',
       name: 'profile',
-      component: loadView('Profile')
+      component: loadView('Profile'),
+      beforeEnter: isAuthenticated
     },
     {
       path: '/settings',
       name: 'settings',
-      component: loadView('Settings')
+      component: loadView('Settings'),
+      beforeEnter: isAuthenticated
     }
   ]
 })

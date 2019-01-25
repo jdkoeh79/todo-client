@@ -1,74 +1,98 @@
 <template>
-  <div class="todo">
-    <div class="title-bar">
+  <v-layout>
+    <div class="checkbox">
       <v-checkbox
         height="0"
         color="#00897b"
         v-model="todo.completed">
       </v-checkbox>
+    </div>
 
+    <div class="todo-main" @click="selectTodo">
       <div class="todo-title">
         {{ todo.title }}
       </div>
-
-      <div class="due-date">
-        {{ todo.dueDate }} {{todo.dueTime }}
+      <div class="priority">
+        <span class="label">Priority: </span>
+        <span>
+          {{ todo.priority }}
+        </span>
       </div>
+    </div>
 
+    <div class="due">
+      <div class="due-date">
+        {{ formattedDate }}
+      </div>
+      <div class="due-time">
+        {{ formattedTime }}
+      </div>
+    </div>
+
+    <div class="remove">
       <v-icon class="remove-button">close</v-icon>
-     </div> <!-- title-bar -->
-     <div class="todo-body">
-       {{ todo.priority }}
-     </div>
-  </div> <!-- todo -->
+    </div>
+  </v-layout>
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
-  props: [
-    'todo'
-  ]
+  props: {
+    todo: Object
+  },
+  data () {
+    return {
+      formattedDate: null,
+      formattedTime: null
+    }
+  },
+  mounted: function () {
+    if (this.todo.dueDate !== null) {
+      this.formattedDate = moment(this.todo.dueDate).format('ddd, MMM D')
+    }
+    if (this.todo.dueTime !== null) {
+      this.formattedTime = moment(this.todo.dueTime).format('h:mm A')
+    }
+  },
+  methods: {
+    selectTodo: function () {
+      this.$emit('select-todo', this.todo)
+    }
+  }
 }
 </script>
 
 <style scoped>
-.todo {
-
-  text-align: left;
-  padding: 10px;
-  border-bottom: 1px solid rgb(176, 212, 200);
+.todo-main {
+  flex-grow: 1;
+  padding-left: 2px;
+  cursor: pointer;
 }
 
-.title-bar {
-  display: flex;
-}
-
-.title-bar div {
-  flex-grow: 0;
-}
-
-.todo .todo-title {
-  flex-grow: 3;
+.todo-spacer {
+  flex-grow: 100;
 }
 
 .todo-title {
   font-size: 18px;
-  padding-left: 5px;
 }
 
-.due-date {
-  flex-grow: 0;
+.due {
+  text-align: center;
   font-size: 1.2em;
+  padding-right: 30px;
+}
+
+.label {
+  font-size: 10px;
+  position: relative;
+  top: -1px;
 }
 
 .remove-button {
-  flex-grow: 0;
-  padding-left: 10px;
-}
-
-.todo-body {
-  margin-left: 38px;
-  font-size: 12px;
+  cursor: pointer;
 }
 
 >>>.v-input {
