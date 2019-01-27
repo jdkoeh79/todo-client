@@ -93,7 +93,7 @@
             </div>
 
             <div class="detail">
-              <span class="label">Timestamp:</span> 1/14/2019 5:46 PM
+              <span class="label">Timestamp:</span> {{ createdAt }}
             </div>
 
           </v-flex>
@@ -126,9 +126,24 @@
         :key="i"
       />
 
-      <div class="add-item">
+      <div
+        v-if="enterNewItem == false"
+        class="add-item"
+        @click="newItem"
+      >
         <v-icon class="add-button">add</v-icon>
           Add Item
+      </div>
+      <div
+        v-else
+        class="enter-new-item"
+      >
+        <v-text-field
+          placeholder="Item name..."
+          color="rgb(0, 137, 123)"
+          autofocus
+          @blur="enterNewItem = false"
+        />
       </div>
 
     </div>
@@ -153,7 +168,9 @@ export default {
       menu: false,
       formattedDate: null,
       dueTime: null,
-      date: null
+      createdAt: null,
+      date: null,
+      enterNewItem: false
     }
   },
   mounted: function () {
@@ -163,6 +180,7 @@ export default {
     if (this.todo.dueTime !== null) {
       this.formattedTime = moment(this.todo.dueTime).format('h:mm A')
     }
+    this.createdAt = moment(this.todo.createdAt).format('MM/DD/YYYY h:mm A')
   },
   methods: {
     setDate: function (date) {
@@ -173,6 +191,9 @@ export default {
     clearDate: function () {
       this.formattedDate = null
       this.menu = false
+    },
+    newItem: function () {
+      this.enterNewItem = true
     }
   }
 }
@@ -204,7 +225,7 @@ export default {
 .detail-row {
   display: flex;
   flex-direction: row;
-  padding: 3px 0;
+  padding: 2px 0 3px;
 }
 
 .detail {
@@ -214,6 +235,7 @@ export default {
 .detail-icon {
   font-size: 25px;
   padding-right: 5px;
+  padding-top: 1px;
   cursor: pointer;
   color: rgb(0, 137, 123);
 }
@@ -232,7 +254,7 @@ export default {
 
 .todo-items {
   max-height: 80vh;
-  padding: 10px;
+  padding: 10px 10px 0;
   overflow: auto;
 }
 
@@ -282,7 +304,7 @@ export default {
   color: rgb(0, 137, 123);
   font-size: 16px;
   text-align: left;
-  padding: 0 10px;
+  padding: 5px 10px 10px;
   padding-left: 15px;
   cursor: pointer;
 }
@@ -302,11 +324,31 @@ export default {
   color: rgb(0, 137, 123);
 }
 
+.enter-new-item {
+  padding: 3px 10px 0 25px;
+}
+
 .panel {
   padding: 10px 20px 0;
 }
 
 >>>.v-messages {
   min-height: 0;
+}
+
+>>>.v-text-field {
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 20px;
+    padding-right: 27px;
+}
+
+>>>.v-text-field--box input {
+  margin-top: 0;
+}
+
+>>>.v-text-field--box .v-input__slot {
+  min-height: 0;
+  padding-left: 5px;
 }
 </style>

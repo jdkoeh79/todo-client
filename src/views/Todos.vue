@@ -24,15 +24,35 @@
             </div> <!-- todo -->
           </div> <!-- todo-wrapper -->
 
-          <div class="add-todo">
+          <div
+            v-if="enterNewTodo == false"
+            class="add-todo"
+            @click="newTodo"
+
+          >
             <v-icon class="add-button">add</v-icon>
-              Create New To-Do
+            Create New To-Do
+          </div>
+          <div
+            v-else
+            class="enter-new-todo"
+          >
+            <v-text-field
+              placeholder="Title..."
+              color="rgb(0, 137, 123)"
+              autofocus
+              v-model="newTodoTitle"
+              @blur="createTodo"
+              @keyup.enter="createTodo"
+            />
           </div>
 
-          <div class="blank-line"></div>
-          <div class="blank-line"></div>
-          <div class="blank-line"></div>
-          <div class="blank-line"></div>
+          <div
+            v-for="(todo, i) in todos"
+            v-if="i < 9 - todos.length"
+            :key="todo.title"
+            class="blank-line"
+          />
 
         </div> <!-- todos -->
       </div> <!-- todos-container -->
@@ -68,15 +88,38 @@ export default {
       'user'
     ])
   },
+  data () {
+    return {
+      todos: null,
+      selectedTodo: {},
+      enterNewTodo: false,
+      newTodoTitle: ''
+    }
+  },
   methods: {
     selectTodo: function (todo) {
       this.selectedTodo = todo
-    }
-  },
-  data () {
-    return {
-      selectedTodo: {},
-      todos: null
+    },
+    newTodo: function () {
+      this.enterNewTodo = true
+    },
+    createTodo: function () {
+      if (this.enterNewTodo && this.newTodoTitle !== '') {
+        this.todos.push({
+          id: this.todos.length + 1,
+          title: this.newTodoTitle,
+          completed: false,
+          priority: 'Low',
+          dueDate: null,
+          dueTime: null,
+          recurring: null,
+          note: null,
+          items: []
+        })
+        this.selectedTodo = this.todos[this.todos.length - 1]
+      }
+      this.enterNewTodo = false
+      this.newTodoTitle = ''
     }
   },
   async mounted () {
@@ -114,11 +157,15 @@ export default {
 }
 
 .High {
-  background-color: #ffd2d2;
+  /* background-color: #f7d8d5; */
+  background-color: #e7c7c7;
+  /* color: white; */
+
 }
 
 .Normal {
-  background-color: #fff7b4;
+  /* background-color: #d6f1e9; */
+  background-color: #d4e7e2;
 }
 
 .selected {
@@ -129,8 +176,15 @@ export default {
   color: rgb(0, 137, 123);
   font-size: 16px;
   text-align: left;
-  padding: 17px 10px;
+  padding: 16px 5px 18px;
   cursor: pointer;
+  border-bottom: 1px solid rgb(176, 212, 200);
+}
+
+.enter-new-todo {
+  font-size: 16px;
+  text-align: left;
+  padding: 15px 15px 7px 14px;
   border-bottom: 1px solid rgb(176, 212, 200);
 }
 
@@ -144,6 +198,26 @@ export default {
   top: 3px;
   padding-right: 5px;
   color: rgb(0, 137, 123);
+}
+
+>>>.v-text-field {
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 23px;
+    padding-right: 27px;
+}
+
+>>>.v-messages {
+  min-height: 0;
+}
+
+>>>.v-text-field--box input {
+  margin-top: 0;
+}
+
+>>>.v-text-field--box .v-input__slot {
+  min-height: 0;
+  padding-left: 5px;
 }
 
 </style>
