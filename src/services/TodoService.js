@@ -5,5 +5,8 @@ export default {
     return Api().get('todos', {
       userId: userId
     })
+  },
+  post (newTodoTitle) {
+    return Api().post('todos', newTodoTitle)
   }
 }

@@ -103,23 +103,28 @@ export default {
     newTodo: function () {
       this.enterNewTodo = true
     },
-    createTodo: function () {
+    async createTodo () {
       if (this.enterNewTodo && this.newTodoTitle !== '') {
-        this.todos.push({
-          id: this.todos.length + 1,
-          title: this.newTodoTitle,
-          completed: false,
-          priority: 'Low',
-          dueDate: null,
-          dueTime: null,
-          recurring: null,
-          note: null,
-          items: []
-        })
+        try {
+          const title = this.newTodoTitle
+          const todo = (await TodoService.post({
+            title: title
+          })).data
+          this.todos.push(todo)
+        } catch (err) {
+          console.log('An error ocurred creating the new todo:', err.message)
+        }
         this.selectedTodo = this.todos[this.todos.length - 1]
       }
       this.enterNewTodo = false
       this.newTodoTitle = ''
+    },
+    async deleteTodo () {
+      try {
+        await TodoService.delete()
+      } catch (err) {
+        console.log('An error ocurred deleting the todo:', err.message)
+      }
     }
   },
   async mounted () {
