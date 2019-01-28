@@ -8,7 +8,10 @@
       </v-checkbox>
     </div>
 
-    <div class="todo-main" @click="selectTodo">
+    <div
+      class="todo-main"
+      @click="selectTodo"
+    >
       <div class="todo-title">
         {{ todo.title }}
       </div>
@@ -30,13 +33,19 @@
     </div>
 
     <div class="remove">
-      <v-icon class="remove-button">close</v-icon>
+      <v-icon
+        class="remove-button"
+        @click="deleteTodo(todo)"
+      >
+        close
+      </v-icon>
     </div>
   </v-layout>
 </template>
 
 <script>
 import moment from 'moment'
+import TodoService from '@/services/TodoService'
 
 export default {
   props: {
@@ -59,6 +68,14 @@ export default {
   methods: {
     selectTodo: function () {
       this.$emit('select-todo', this.todo)
+    },
+    async deleteTodo (todo) {
+      this.$emit('delete-todo', this.todo)
+      try {
+        await TodoService.delete(todo.id)
+      } catch (err) {
+        console.log('An error ocurred deleting the todo:', err.message)
+      }
     }
   }
 }

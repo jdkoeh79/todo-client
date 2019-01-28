@@ -8,5 +8,12 @@ export default {
   },
   post (newTodoTitle) {
     return Api().post('todos', newTodoTitle)
+  },
+  delete (todoId) {
+    return Api().delete('todos', {
+      data: {
+        todoId: todoId
+      }
+    })
   }
 }

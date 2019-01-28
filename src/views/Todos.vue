@@ -20,6 +20,7 @@
               <todo
                 :todo="todo"
                 @select-todo="selectTodo($event)"
+                @delete-todo="deleteTodo($event)"
               />
             </div> <!-- todo -->
           </div> <!-- todo-wrapper -->
@@ -103,6 +104,13 @@ export default {
     newTodo: function () {
       this.enterNewTodo = true
     },
+    deleteTodo: function (todo) {
+      const index = this.todos.indexOf(todo)
+      this.todos.splice(index, 1)
+      if (todo.id == this.selectedTodo.id) {
+        this.selectedTodo = this.todos[index - 1]
+      }
+    },
     async createTodo () {
       if (this.enterNewTodo && this.newTodoTitle !== '') {
         try {
@@ -118,13 +126,6 @@ export default {
       }
       this.enterNewTodo = false
       this.newTodoTitle = ''
-    },
-    async deleteTodo () {
-      try {
-        await TodoService.delete()
-      } catch (err) {
-        console.log('An error ocurred deleting the todo:', err.message)
-      }
     }
   },
   async mounted () {
