@@ -20,7 +20,8 @@
               <todo
                 :todo="todo"
                 @select-todo="selectTodo($event)"
-                @delete-todo="deleteTodo($event)"
+                @archive-todo="removeTodo($event)"
+                @todo-status="todoStatus($event)"
               />
             </div> <!-- todo -->
           </div> <!-- todo-wrapper -->
@@ -104,23 +105,23 @@ export default {
     newTodo: function () {
       this.enterNewTodo = true
     },
-    deleteTodo: function (todo) {
+    removeTodo: function (todo) {
       const index = this.todos.indexOf(todo)
       this.todos.splice(index, 1)
-      if (todo.id == this.selectedTodo.id) {
+      if (todo.id === this.selectedTodo.id) {
         this.selectedTodo = this.todos[index - 1]
       }
     },
     async createTodo () {
       if (this.enterNewTodo && this.newTodoTitle !== '') {
+        const title = this.newTodoTitle
         try {
-          const title = this.newTodoTitle
           const todo = (await TodoService.post({
             title: title
           })).data
           this.todos.push(todo)
         } catch (err) {
-          console.log('An error ocurred creating the new todo:', err.message)
+          console.log('An error occurred creating the new todo:', err.message)
         }
         this.selectedTodo = this.todos[this.todos.length - 1]
       }

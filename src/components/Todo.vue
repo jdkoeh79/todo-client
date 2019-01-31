@@ -4,7 +4,9 @@
       <v-checkbox
         height="0"
         color="#00897b"
-        v-model="todo.completed">
+        v-model="todo.completed"
+        v-on:change="updateCompletedStatus"
+      >
       </v-checkbox>
     </div>
 
@@ -33,13 +35,47 @@
     </div>
 
     <div class="remove">
-      <v-icon
-        class="remove-button"
-        @click="deleteTodo(todo)"
+      <v-dialog
+        v-model="confirmRemove"
+        width="400"
       >
-        close
-      </v-icon>
+        <v-icon
+          class="remove-button"
+          slot="activator"
+        >
+          close
+        </v-icon>
+        <v-card>
+          <v-card-title
+            class="confirm-titlebar"
+          >
+            <span class="title">Confirm</span>
+          </v-card-title>
+          <v-card-text>
+            <h2>{{ todo.title }}</h2>
+            <p>Completed: {{ todo.completed === false ? 'No' : 'Yes' }}</p>
+            <h3 class="message">Remove to Archive?</h3><br>
+            <div class="dialog-btns">
+              <v-btn
+                class="cancel-btn"
+                @click="cancelDialog"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                class="archive-btn"
+                color="#00897b"
+                @click="archiveTodo"
+              >
+                Archive
+              </v-btn>
+            </div>
+            <div class="tip"><v-icon small class="info-icon">info</v-icon> You can restore archived To-Do's from the Archive page.</div>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </div>
+
   </v-layout>
 </template>
 
@@ -54,27 +90,51 @@ export default {
   data () {
     return {
       formattedDate: null,
-      formattedTime: null
+      formattedTime: null,
+      confirmRemove: false
     }
   },
   mounted: function () {
-    if (this.todo.dueDate !== null) {
-      this.formattedDate = moment(this.todo.dueDate).format('ddd, MMM D')
+    const dueDate = this.todo.dueDate
+    const dueTime = this.todo.dueTime
+    if (dueDate !== null) {
+      this.formattedDate = moment(dueDate).format('ddd, MMM D')
     }
-    if (this.todo.dueTime !== null) {
-      this.formattedTime = moment(this.todo.dueTime).format('h:mm A')
+    if (dueTime !== null) {
+      this.formattedTime = moment(dueTime).format('h:mm A')
     }
   },
   methods: {
     selectTodo: function () {
       this.$emit('select-todo', this.todo)
     },
-    async deleteTodo (todo) {
-      this.$emit('delete-todo', this.todo)
+    cancelDialog: function () {
+      this.confirmRemove = false
+    },
+    // async deleteTodo () {
+    //   const todo = this.todo
+    //   this.$emit('delete-todo', todo)
+    //   try {
+    //     await TodoService.delete(todo.id)
+    //   } catch (err) {
+    //     console.log('An error occurred deleting the todo:', err.message)
+    //   }
+    // },
+    async updateCompletedStatus () {
       try {
-        await TodoService.delete(todo.id)
+        await TodoService.updateCompletedStatus(this.todo)
       } catch (err) {
-        console.log('An error ocurred deleting the todo:', err.message)
+        console.log('An error occured updating the todo completed status:', err.message)
+      }
+    },
+    async archiveTodo () {
+      this.todo.archived = true
+      const todo = this.todo
+      this.$emit('archive-todo', this.todo)
+      try {
+        await TodoService.updateArchivedStatus(todo)
+      } catch (err) {
+        console.log('An error occured updating the todo archived status:', err.message)
       }
     }
   }
@@ -106,6 +166,32 @@ export default {
   font-size: 10px;
   position: relative;
   top: -1px;
+}
+
+.confirm-titlebar {
+  background-color: #00897b;
+  color: white;
+}
+
+.message {
+  padding: 20px 0 20px;
+}
+
+.info-icon {
+  color: rgb(73, 130, 184);
+}
+
+.tip {
+  font-size: .9em;
+}
+
+.dialog-btns {
+  padding-bottom: 25px;
+}
+
+.archive-btn {
+  margin-left: 30px;
+  color: white;
 }
 
 .remove-button {

@@ -15,5 +15,17 @@ export default {
         todoId: todoId
       }
     })
+  },
+  updateCompletedStatus (todo) {
+    return Api().put('todo/completed', {
+      todoId: todo.id,
+      completed: todo.completed
+    })
+  },
+  updateArchivedStatus (todo) {
+    return Api().put('todo/archived', {
+      todoId: todo.id,
+      archived: todo.archived
+    })
   }
 }
