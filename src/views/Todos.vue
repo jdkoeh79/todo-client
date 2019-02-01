@@ -63,6 +63,7 @@
 
       <todo-items
         :todo="selectedTodo"
+        @priority-update="updatePriority($event)"
       />
 
     </v-flex>
@@ -111,6 +112,10 @@ export default {
       if (todo.id === this.selectedTodo.id) {
         this.selectedTodo = this.todos[index - 1]
       }
+    },
+    updatePriority: function (todo) {
+      const index = this.todos.indexOf(todo)
+      this.todos[index].priority = todo.priority
     },
     async createTodo () {
       if (this.enterNewTodo && this.newTodoTitle !== '') {

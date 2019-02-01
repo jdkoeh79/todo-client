@@ -15,8 +15,33 @@
         <v-layout row wrap>
           <v-flex xs11>
             <div class="detail-row">
-
-              <v-icon class="detail-icon">swap_vert</v-icon>
+              <v-menu
+                offset-y
+                :nudge-right="40"
+                transition="scale-transition"
+                min-width="200"
+              >
+                <v-icon
+                  class="detail-icon"
+                  slot="activator"
+                >
+                swap_vert</v-icon>
+                <div class="menu-header">
+                  <div class="menu-title">
+                    Priority
+                  </div>
+                </div>
+                <v-list>
+                  <v-list-tile
+                    v-for="(priority, i) in priorities"
+                    :key="i"
+                    @click="updatePriority(priority)"
+                    :class="{'selected': priorityCheck(priority)}"
+                  >
+                    <v-list-tile-title>{{ priority }}</v-list-tile-title>
+                  </v-list-tile>
+                </v-list>
+              </v-menu>
               <div class="detail">
                 <span class="label"></span> {{ todo.priority }}
               </div>
@@ -154,6 +179,7 @@
 <script>
 import Item from './Item.vue'
 import moment from 'moment'
+import TodoService from '@/services/TodoService'
 
 export default {
   name: 'TodoItems',
@@ -170,7 +196,12 @@ export default {
       dueTime: null,
       createdAt: null,
       date: null,
-      enterNewItem: false
+      enterNewItem: false,
+      priorities: [
+        'Low',
+        'Normal',
+        'High'
+      ]
     }
   },
   mounted: function () {
@@ -183,6 +214,20 @@ export default {
     this.createdAt = moment(this.todo.createdAt).format('MM/DD/YYYY h:mm A')
   },
   methods: {
+    priorityCheck: function (priority) {
+      if (priority === this.todo.priority) {
+        return true
+      }
+    },
+    async updatePriority (priority) {
+      this.todo.priority = priority
+      this.$emit('priority-update', this.todo)
+      try {
+        await TodoService.updatePriority(this.todo)
+      } catch (err) {
+        console.log('something went wrong updating the priority:', err.message)
+      }
+    },
     setDate: function (date) {
       console.log(date)
       this.formattedDate = moment(date).format('ddd, MMM D')
@@ -245,6 +290,24 @@ export default {
   margin-top: 3px;
   margin-left: 2px;
   color: rgb(99, 99, 99);
+}
+
+.menu-header {
+  background-color: #00897b;
+  color: white;
+}
+
+.menu-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  text-align: left;
+  padding: 9px 25px;
+}
+
+.selected {
+  color: #00897b;
+  /* background-color: #dff1f0; */
 }
 
 .lft {
@@ -350,5 +413,9 @@ export default {
 >>>.v-text-field--box .v-input__slot {
   min-height: 0;
   padding-left: 5px;
+}
+
+>>>.theme--light.v-list .v-list__tile--link:hover {
+  background-color: #dff1f0;
 }
 </style>

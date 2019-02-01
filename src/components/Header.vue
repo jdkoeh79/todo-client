@@ -169,4 +169,8 @@ export default {
   position: relative;
   top: -5px;
 }
+
+>>>.theme--light.v-list .v-list__tile--link:hover {
+  background-color: #dff1f0;
+}
 </style>

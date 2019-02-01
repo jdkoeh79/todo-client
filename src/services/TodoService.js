@@ -27,5 +27,11 @@ export default {
       todoId: todo.id,
       archived: todo.archived
     })
+  },
+  updatePriority (todo) {
+    return Api().put('todo/priority', {
+      todoId: todo.id,
+      priority: todo.priority
+    })
   }
 }
