@@ -53,7 +53,7 @@
                 :close-on-content-click="false"
                 v-model="menu"
                 :nudge-right="40"
-                :return-value.sync="date"
+                :return-value.sync="dueDate"
                 lazy
                 transition="scale-transition"
                 offset-y
@@ -61,17 +61,16 @@
                 min-width="290px"
               >
                 <v-icon slot="activator" class="detail-icon">date_range</v-icon>
-                <!-- <v-text-field :value="dueDate" slot="activator" prepend-icon="date_range" v-model="dueDate"></v-text-field> -->
 
-                <v-date-picker color="rgb(0, 137, 123)" v-model="date">
+                <v-date-picker color="rgb(0, 137, 123)" v-model="dueDate">
                   <v-spacer></v-spacer>
                   <v-btn flat @click="menu = false">Cancel</v-btn>
-                  <v-btn flat @click="clearDate">Clear</v-btn>
-                  <v-btn flat @click="setDate(date)">OK</v-btn>
+                  <v-btn flat @click="setDate('')">Clear</v-btn>
+                  <v-btn flat @click="setDate(dueDate)">OK</v-btn>
                 </v-date-picker>
               </v-menu>
 
-              <div class="detail" v-if="formattedDate !== null">
+              <div class="detail" v-if="todo.dueDate !== null">
                 <span class="label"></span> {{ formattedDate }}
               </div>
 
@@ -154,7 +153,7 @@
       <div
         v-if="enterNewItem == false"
         class="add-item"
-        @click="newItem"
+        @click="showTextField"
       >
         <v-icon class="add-button">add</v-icon>
           Add Item
@@ -192,10 +191,9 @@ export default {
   data () {
     return {
       menu: false,
-      formattedDate: null,
+      dueDate: null,
       dueTime: null,
       createdAt: null,
-      date: null,
       enterNewItem: false,
       priorities: [
         'Low',
@@ -204,20 +202,38 @@ export default {
       ]
     }
   },
-  mounted: function () {
-    if (this.todo.dueDate !== null) {
-      this.formattedDate = moment(this.todo.dueDate).format('ddd, MMM D')
+  computed: {
+    formattedDate: function () {
+      const dueDate = this.todo.dueDate
+      return dueDate ? moment(dueDate).format('ddd, MMM D') : ''
+    },
+    date: {
+      get: function () {
+        const dueDate = this.todo.dueDate
+        return dueDate ? moment(dueDate).format('YYYY-MM-DD') : ''
+      },
+      set: function (date) {
+        this.dueDate = moment(date).format('YYYY-MM-DD')
+      }
     }
-    if (this.todo.dueTime !== null) {
-      this.formattedTime = moment(this.todo.dueTime).format('h:mm A')
-    }
-    this.createdAt = moment(this.todo.createdAt).format('MM/DD/YYYY h:mm A')
   },
   methods: {
-    priorityCheck: function (priority) {
-      if (priority === this.todo.priority) {
-        return true
+    async setDate (date) {
+      date = (date === '') ? null : date
+      this.todo.dueDate = date
+      this.$emit('date-update', this.todo)
+      this.menu = false
+      try {
+        await TodoService.updateDueDate(this.todo)
+      } catch (err) {
+        console.log('something went wrong updating the due date:', err.message)
       }
+    },
+    showTextField: function () {
+      this.enterNewItem = true
+    },
+    priorityCheck: function (priority) {
+      return priority === this.todo.priority
     },
     async updatePriority (priority) {
       this.todo.priority = priority
@@ -227,18 +243,6 @@ export default {
       } catch (err) {
         console.log('something went wrong updating the priority:', err.message)
       }
-    },
-    setDate: function (date) {
-      console.log(date)
-      this.formattedDate = moment(date).format('ddd, MMM D')
-      this.menu = false
-    },
-    clearDate: function () {
-      this.formattedDate = null
-      this.menu = false
-    },
-    newItem: function () {
-      this.enterNewItem = true
     }
   }
 }

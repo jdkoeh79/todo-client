@@ -4,12 +4,14 @@
       <div class="panel">
         <v-text-field
           label="Email"
-          v-model="email" />
+          v-model="email"
+        />
         <v-text-field
           label="Password"
           type="password"
-          @keyup.enter="login"
-          v-model="password" />
+          v-on:keyup.enter="login"
+          v-model="password"
+        />
 
         <div class="danger-alert" v-html="error" />
 
@@ -17,17 +19,19 @@
           dark
           class="teal darken-1 btn"
           @click="login"
-          @keyup.enter="login">
+          v-on:keyup.enter="login"
+        >
           Login
         </v-btn>
         <div class="sign-up">
           Not registered?
           <router-link
-          :to="{
-            name: 'register'
-          }"
-          tag="span">
-          <a>Sign up for free!</a>
+            :to="{
+              name: 'register'
+            }"
+            tag="span"
+          >
+          <a>Sign up now for free!</a>
         </router-link>
         </div>
       </div>

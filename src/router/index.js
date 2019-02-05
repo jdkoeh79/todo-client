@@ -11,7 +11,7 @@ function loadView (view) {
 
 function isAuthenticated (to, from, next) {
   if (!store.state.isUserLoggedIn) {
-    to({ name: 'register' })
+    to({ name: 'login' })
     next(false)
   } else {
     next()

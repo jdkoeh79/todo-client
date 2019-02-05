@@ -25,7 +25,10 @@
       </div>
     </div>
 
-    <div class="due">
+    <div
+      class="due"
+      @click="selectTodo"
+    >
       <div class="due-date">
         {{ formattedDate }}
       </div>
@@ -89,19 +92,14 @@ export default {
   },
   data () {
     return {
-      formattedDate: null,
       formattedTime: null,
       confirmRemove: false
     }
   },
-  mounted: function () {
-    const dueDate = this.todo.dueDate
-    const dueTime = this.todo.dueTime
-    if (dueDate !== null) {
-      this.formattedDate = moment(dueDate).format('ddd, MMM D')
-    }
-    if (dueTime !== null) {
-      this.formattedTime = moment(dueTime).format('h:mm A')
+  computed: {
+    formattedDate: function () {
+      const dueDate = this.todo.dueDate
+      return dueDate ? moment(dueDate).format('ddd, MMM D') : null
     }
   },
   methods: {
@@ -145,6 +143,9 @@ export default {
 .todo-main {
   flex-grow: 1;
   padding-left: 2px;
+}
+
+.todo-main, .due {
   cursor: pointer;
 }
 

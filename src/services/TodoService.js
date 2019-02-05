@@ -33,5 +33,11 @@ export default {
       todoId: todo.id,
       priority: todo.priority
     })
+  },
+  updateDueDate (todo) {
+    return Api().put('todo/dueDate', {
+      todoId: todo.id,
+      dueDate: todo.dueDate
+    })
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex xs7 mr-4>
+    <v-flex xs8 mr-4>
       <div class="todos-container">
 
         <v-toolbar flat dense class="toolbar" dark>
@@ -51,19 +51,24 @@
 
           <div
             v-for="(todo, i) in todos"
-            v-if="i < 9 - todos.length"
             :key="todo.title"
-            class="blank-line"
-          />
+          >
+          <!-- 9 here needs to be replaced with a computed value based on the user's viewport height -->
+            <div
+              v-if="i < 9 - todos.length"
+              class="blank-line"
+            />
+          </div>
 
         </div> <!-- todos -->
       </div> <!-- todos-container -->
     </v-flex>
-    <v-flex xs5>
+    <v-flex xs4>
 
       <todo-items
         :todo="selectedTodo"
         @priority-update="updatePriority($event)"
+        @date-update="updateDueDate($event)"
       />
 
     </v-flex>
@@ -116,6 +121,15 @@ export default {
     updatePriority: function (todo) {
       const index = this.todos.indexOf(todo)
       this.todos[index].priority = todo.priority
+    },
+    updateDueDate: function (todo) {
+      const dueDate = todo.dueDate
+      console.log('Todos Component->updateDate->dueDate:', dueDate)
+      const index = this.todos.indexOf(todo)
+      this.todos[index].dueDate = dueDate
+      this.todos.map((todo) => {
+        console.log(todo.dueDate)
+      })
     },
     async createTodo () {
       if (this.enterNewTodo && this.newTodoTitle !== '') {
