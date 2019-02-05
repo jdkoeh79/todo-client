@@ -39,5 +39,11 @@ export default {
       todoId: todo.id,
       dueDate: todo.dueDate
     })
+  },
+  updateDueTime (todo) {
+    return Api().put('todo/dueTime', {
+      todoId: todo.id,
+      dueTime: todo.dueTime
+    })
   }
 }

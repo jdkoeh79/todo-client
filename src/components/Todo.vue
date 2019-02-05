@@ -92,7 +92,6 @@ export default {
   },
   data () {
     return {
-      formattedTime: null,
       confirmRemove: false
     }
   },
@@ -100,6 +99,10 @@ export default {
     formattedDate: function () {
       const dueDate = this.todo.dueDate
       return dueDate ? moment(dueDate).format('ddd, MMM D') : null
+    },
+    formattedTime: function () {
+      const dueTime = this.todo.dueTime
+      return dueTime ? moment(dueTime).format('hh:mm A') : null
     }
   },
   methods: {

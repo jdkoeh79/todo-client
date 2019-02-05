@@ -51,7 +51,7 @@
               <v-menu
                 ref="menu"
                 :close-on-content-click="false"
-                v-model="menu"
+                v-model="datePicker"
                 :nudge-right="40"
                 :return-value.sync="dueDate"
                 lazy
@@ -62,9 +62,12 @@
               >
                 <v-icon slot="activator" class="detail-icon">date_range</v-icon>
 
-                <v-date-picker color="rgb(0, 137, 123)" v-model="dueDate">
+                <v-date-picker
+                  color="rgb(0, 137, 123)"
+                  v-model="dueDate"
+                >
                   <v-spacer></v-spacer>
-                  <v-btn flat @click="menu = false">Cancel</v-btn>
+                  <v-btn flat @click="datePicker = false">Cancel</v-btn>
                   <v-btn flat @click="setDate('')">Clear</v-btn>
                   <v-btn flat @click="setDate(dueDate)">OK</v-btn>
                 </v-date-picker>
@@ -82,8 +85,9 @@
               <v-menu
                 ref="menu"
                 :close-on-content-click="false"
+                v-model="timePicker"
                 :nudge-right="40"
-                :return-value.sync="todo.dueTime"
+                :return-value.sync="dueTime"
                 lazy
                 transition="scale-transition"
                 offset-y
@@ -94,12 +98,17 @@
                 <v-icon slot="activator" class="detail-icon">access_alarm</v-icon>
                 <v-time-picker
                   color="rgb(0, 137, 123)"
-                  v-model="todo.dueTime"
+                  v-model="dueTime"
                   full-width
-                />
-              </v-menu>
+                >
+                  <v-spacer></v-spacer>
+                    <v-btn flat @click="timePicker = false">Cancel</v-btn>
+                    <v-btn flat @click="setTime('')">Clear</v-btn>
+                    <v-btn flat @click="setTime(dueTime)">OK</v-btn>
+                </v-time-picker>
+                </v-menu>
               <div class="detail" v-if="todo.dueTime !== null">
-                <span class="label"></span> {{ todo.dueTime }}
+                <span class="label"></span> {{ formattedTime }}
               </div>
               <div class="detail not-set" v-else>Set a Time</div>
             </div>
@@ -190,7 +199,8 @@ export default {
   ],
   data () {
     return {
-      menu: false,
+      datePicker: false,
+      timePicker: false,
       dueDate: null,
       dueTime: null,
       createdAt: null,
@@ -207,14 +217,9 @@ export default {
       const dueDate = this.todo.dueDate
       return dueDate ? moment(dueDate).format('ddd, MMM D') : ''
     },
-    date: {
-      get: function () {
-        const dueDate = this.todo.dueDate
-        return dueDate ? moment(dueDate).format('YYYY-MM-DD') : ''
-      },
-      set: function (date) {
-        this.dueDate = moment(date).format('YYYY-MM-DD')
-      }
+    formattedTime: function () {
+      const dueTime = this.todo.dueTime
+      return dueTime ? moment(dueTime).format('h:mm A') : ''
     }
   },
   methods: {
@@ -222,11 +227,22 @@ export default {
       date = (date === '') ? null : date
       this.todo.dueDate = date
       this.$emit('date-update', this.todo)
-      this.menu = false
+      this.datePicker = false
       try {
         await TodoService.updateDueDate(this.todo)
       } catch (err) {
         console.log('something went wrong updating the due date:', err.message)
+      }
+    },
+    async setTime (time) {
+      time = (time === '') ? null : moment(time, 'HH:mm').format()
+      this.todo.dueTime = time
+      this.$emit('time-update', this.todo)
+      this.timePicker = false
+      try {
+        await TodoService.updateDueTime(this.todo)
+      } catch (err) {
+        console.log('something went wrong updating the due time:', err.message)
       }
     },
     showTextField: function () {

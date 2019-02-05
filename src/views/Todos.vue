@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex xs8 mr-4>
+    <v-flex xs7 mr-4>
       <div class="todos-container">
 
         <v-toolbar flat dense class="toolbar" dark>
@@ -63,12 +63,13 @@
         </div> <!-- todos -->
       </div> <!-- todos-container -->
     </v-flex>
-    <v-flex xs4>
+    <v-flex xs5>
 
       <todo-items
         :todo="selectedTodo"
         @priority-update="updatePriority($event)"
         @date-update="updateDueDate($event)"
+        @time-update="updateDueTime($event)"
       />
 
     </v-flex>
@@ -124,12 +125,13 @@ export default {
     },
     updateDueDate: function (todo) {
       const dueDate = todo.dueDate
-      console.log('Todos Component->updateDate->dueDate:', dueDate)
       const index = this.todos.indexOf(todo)
       this.todos[index].dueDate = dueDate
-      this.todos.map((todo) => {
-        console.log(todo.dueDate)
-      })
+    },
+    updateDueTime: function (todo) {
+      const dueTime = todo.dueTime
+      const index = this.todos.indexOf(todo)
+      this.todos[index].dueTime = dueTime
     },
     async createTodo () {
       if (this.enterNewTodo && this.newTodoTitle !== '') {
