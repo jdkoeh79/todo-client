@@ -185,7 +185,7 @@
 <script>
 import Item from './Item.vue'
 import moment from 'moment'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 import TodoService from '@/services/TodoService'
 
 export default {
@@ -372,7 +372,6 @@ export default {
   padding-left: 10px;
   color: grey;
   flex-grow: 1;
-
 }
 
 .clear-note {
