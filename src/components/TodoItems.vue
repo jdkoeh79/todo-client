@@ -53,7 +53,6 @@
                 :close-on-content-click="false"
                 v-model="datePicker"
                 :nudge-right="40"
-                :return-value.sync="dueDate"
                 lazy
                 transition="scale-transition"
                 offset-y
@@ -87,7 +86,6 @@
                 :close-on-content-click="false"
                 v-model="timePicker"
                 :nudge-right="40"
-                :return-value.sync="dueTime"
                 lazy
                 transition="scale-transition"
                 offset-y
@@ -187,6 +185,7 @@
 <script>
 import Item from './Item.vue'
 import moment from 'moment'
+import _ from 'lodash'
 import TodoService from '@/services/TodoService'
 
 export default {
@@ -214,17 +213,31 @@ export default {
   },
   computed: {
     formattedDate: function () {
-      const dueDate = this.todo.dueDate
+      const { dueDate } = this.todo
       return dueDate ? moment(dueDate).format('ddd, MMM D') : ''
     },
     formattedTime: function () {
-      const dueTime = this.todo.dueTime
+      const { dueTime } = this.todo
       return dueTime ? moment(dueTime).format('h:mm A') : ''
+    },
+    note: function () {
+      return this.todo.note
     }
+  },
+  watch: {
+    note: _.debounce(async function (text) {
+      text = text === '' ? null : text
+      this.todo.note = text
+      try {
+        await TodoService.updateNote(this.todo)
+      } catch (err) {
+        console.log('something went wrong updating the note:', err.message)
+      }
+    }, 500)
   },
   methods: {
     async setDate (date) {
-      date = (date === '') ? null : date
+      date = date === '' ? null : date
       this.todo.dueDate = date
       this.$emit('date-update', this.todo)
       this.datePicker = false
@@ -235,7 +248,7 @@ export default {
       }
     },
     async setTime (time) {
-      time = (time === '') ? null : moment(time, 'HH:mm').format()
+      time = time === '' ? null : moment(time, 'HH:mm').format()
       this.todo.dueTime = time
       this.$emit('time-update', this.todo)
       this.timePicker = false

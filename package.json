@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "lodash": "^4.17.11",
     "material-design-icons-iconfont": "^4.0.1",
     "moment": "^2.23.0",
     "quick-local-ip": "^1.0.7",
