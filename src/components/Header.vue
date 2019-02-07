@@ -45,6 +45,13 @@
           Dashboard
       </v-btn>
 
+      <v-btn
+        flat
+        v-if="$store.state.isUserLoggedIn"
+        :to="{name: 'archive'}">
+          Archive
+      </v-btn>
+
       <v-menu
         open-on-hover
         bottom

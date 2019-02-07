@@ -5,10 +5,15 @@
       height="0"
       color="#00897b"
       :label="item.name"
-      v-model="item.completed">
+      v-model="item.completed"
+      v-on:change="updateCompletedStatus"
+    >
     </v-checkbox>
 
-    <v-icon class="remove-button">close</v-icon>
+    <v-icon
+      class="remove-button"
+      @click="removeItem"
+    >close</v-icon>
 
   </div>
 </template>
@@ -18,7 +23,15 @@ export default {
   name: 'Item',
   props: [
     'item'
-  ]
+  ],
+  methods: {
+    updateCompletedStatus () {
+      this.$emit('update-status', this.item)
+    },
+    removeItem () {
+      this.$emit('remove-item', this.item)
+    }
+  }
 }
 </script>
 

@@ -20,7 +20,7 @@
               <todo
                 :todo="todo"
                 @select-todo="selectTodo($event)"
-                @archive-todo="removeTodo($event)"
+                @archive-todo="removeTodoFromDOM($event)"
                 @todo-status="todoStatus($event)"
               />
             </div> <!-- todo -->
@@ -53,7 +53,9 @@
             v-for="(todo, i) in todos"
             :key="todo.title"
           >
-          <!-- 9 here needs to be replaced with a computed value based on the user's viewport height -->
+          <!-- 9 here needs to be replaced
+          with a computed value based on the
+          user's viewport height -->
             <div
               v-if="i < 9 - todos.length"
               class="blank-line"
@@ -112,7 +114,7 @@ export default {
     newTodo: function () {
       this.enterNewTodo = true
     },
-    removeTodo: function (todo) {
+    removeTodoFromDOM: function (todo) {
       const index = this.todos.indexOf(todo)
       this.todos.splice(index, 1)
       if (todo.id === this.selectedTodo.id) {

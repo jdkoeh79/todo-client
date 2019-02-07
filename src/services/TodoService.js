@@ -51,5 +51,11 @@ export default {
       todoId: todo.id,
       note: todo.note
     })
+  },
+  updateItems (todo) {
+    return Api().put('todo/items', {
+      todoId: todo.id,
+      items: todo.items
+    })
   }
 }

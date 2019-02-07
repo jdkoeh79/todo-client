@@ -146,10 +146,15 @@ export default {
 .todo-main {
   flex-grow: 1;
   padding-left: 2px;
+  padding-right: 20px;
 }
 
 .todo-main, .due {
   cursor: pointer;
+}
+
+.todo {
+    padding-top: 2px;
 }
 
 .todo-spacer {
@@ -163,7 +168,8 @@ export default {
 .due {
   text-align: center;
   font-size: 1.2em;
-  padding-right: 30px;
+  margin-right: 10px;
+  min-width: 100px;
 }
 
 .label {

@@ -77,7 +77,6 @@
               </div>
 
               <div class="detail not-set" v-else>Set a Date</div>
-
             </div>
 
             <div class="detail-row">
@@ -100,11 +99,12 @@
                   full-width
                 >
                   <v-spacer></v-spacer>
-                    <v-btn flat @click="timePicker = false">Cancel</v-btn>
-                    <v-btn flat @click="setTime('')">Clear</v-btn>
-                    <v-btn flat @click="setTime(dueTime)">OK</v-btn>
+                  <v-btn flat @click="timePicker = false">Cancel</v-btn>
+                  <v-btn flat @click="setTime('')">Clear</v-btn>
+                  <v-btn flat @click="setTime(dueTime)">OK</v-btn>
                 </v-time-picker>
-                </v-menu>
+              </v-menu>
+
               <div class="detail" v-if="todo.dueTime !== null">
                 <span class="label"></span> {{ formattedTime }}
               </div>
@@ -126,7 +126,6 @@
             <div class="detail">
               <span class="label">Timestamp:</span> {{ createdAt }}
             </div>
-
           </v-flex>
         </v-layout>
       </div>
@@ -143,10 +142,10 @@
           <textarea-autosize
             class="note"
             placeholder="Add a note..."
+            spellcheck="false"
             v-model="todo.note"
             :min-height="50"
           />
-
         </div>
       </div>
 
@@ -155,30 +154,47 @@
         :item="item"
         :index="i"
         :key="i"
+        @remove-item="removeItem($event)"
+        @update-status="updateItem($event)"
       />
 
-      <div
+      <v-layout
+        row
         v-if="enterNewItem == false"
-        class="add-item"
-        @click="showTextField"
       >
-        <v-icon class="add-button">add</v-icon>
-          Add Item
-      </div>
-      <div
+        <v-flex xs10>
+          <div
+            class="add-item"
+            @click="showTextField"
+          >
+            <v-icon class="add-button">add</v-icon>
+              Add Item
+          </div>
+
+        </v-flex>
+        <v-flex xs2>
+          <!-- Prevents activating the New Item text field after removing the last
+               item while maintaining the full width of the text field when activated -->
+        </v-flex>
+      </v-layout>
+      <v-layout
+        row
         v-else
-        class="enter-new-item"
       >
-        <v-text-field
-          placeholder="Item name..."
-          color="rgb(0, 137, 123)"
-          autofocus
-          @blur="enterNewItem = false"
-        />
-      </div>
-
+        <v-flex xs12>
+          <div class="enter-new-item">
+            <v-text-field
+              placeholder="Item name..."
+              color="rgb(0, 137, 123)"
+              autofocus
+              v-model="newItem"
+              @blur="addItem"
+              @keyup.enter="addItem"
+            />
+          </div>
+        </v-flex>
+      </v-layout>
     </div>
-
   </div>
 </template>
 
@@ -204,6 +220,7 @@ export default {
       dueTime: null,
       createdAt: null,
       enterNewItem: false,
+      newItem: '',
       priorities: [
         'Low',
         'Normal',
@@ -212,20 +229,20 @@ export default {
     }
   },
   computed: {
-    formattedDate: function () {
+    formattedDate () {
       const { dueDate } = this.todo
       return dueDate ? moment(dueDate).format('ddd, MMM D') : ''
     },
-    formattedTime: function () {
+    formattedTime () {
       const { dueTime } = this.todo
       return dueTime ? moment(dueTime).format('h:mm A') : ''
     },
-    note: function () {
+    note () {
       return this.todo.note
     }
   },
   watch: {
-    note: _.debounce(async function (text) {
+    note: debounce(async function (text) {
       text = text === '' ? null : text
       this.todo.note = text
       try {
@@ -233,7 +250,7 @@ export default {
       } catch (err) {
         console.log('something went wrong updating the note:', err.message)
       }
-    }, 500)
+    }, 1000)
   },
   methods: {
     async setDate (date) {
@@ -246,6 +263,7 @@ export default {
       } catch (err) {
         console.log('something went wrong updating the due date:', err.message)
       }
+      this.dueDate = null
     },
     async setTime (time) {
       time = time === '' ? null : moment(time, 'HH:mm').format()
@@ -257,11 +275,12 @@ export default {
       } catch (err) {
         console.log('something went wrong updating the due time:', err.message)
       }
+      this.dueTime = null
     },
-    showTextField: function () {
+    showTextField () {
       this.enterNewItem = true
     },
-    priorityCheck: function (priority) {
+    priorityCheck (priority) {
       return priority === this.todo.priority
     },
     async updatePriority (priority) {
@@ -271,6 +290,45 @@ export default {
         await TodoService.updatePriority(this.todo)
       } catch (err) {
         console.log('something went wrong updating the priority:', err.message)
+      }
+    },
+    async addItem () {
+      if (this.enterNewItem && this.newItem !== '') {
+        let item = {
+          name: this.newItem,
+          completed: false
+        }
+        if (!this.todo.items) {
+          this.todo.items = new Array(item)
+        } else {
+          this.todo.items.push(item)
+        }
+        try {
+          await TodoService.updateItems(this.todo)
+        } catch (err) {
+          console.log('An error occurred creating the new item:', err.message)
+        }
+      } else {
+        this.enterNewItem = false
+      }
+      this.newItem = ''
+    },
+    async updateItem (item) {
+      const index = this.todo.items.indexOf(item)
+      this.todo.items[index] = item
+      try {
+        await TodoService.updateItems(this.todo)
+      } catch (err) {
+        console.log('something went wrong updating the item completed status', err.message)
+      }
+    },
+    async removeItem (item) {
+      const index = this.todo.items.indexOf(item)
+      this.todo.items.splice(index, 1)
+      try {
+        await TodoService.updateItems(this.todo)
+      } catch (err) {
+        console.log('something went wrong updating the item completed status', err.message)
       }
     }
   }
@@ -348,7 +406,7 @@ export default {
   padding-left: 10px;
 }
 
-.todo-items {
+#todoitems {
   max-height: 80vh;
   padding: 10px 10px 0;
   overflow: auto;

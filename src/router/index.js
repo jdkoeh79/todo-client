@@ -53,6 +53,12 @@ export default new Router({
       beforeEnter: isAuthenticated
     },
     {
+      path: '/archive',
+      name: 'archive',
+      component: loadView('Archive'),
+      beforeEnter: isAuthenticated
+    },
+    {
       path: '/groups',
       name: 'groups',
       component: loadView('Groups'),
