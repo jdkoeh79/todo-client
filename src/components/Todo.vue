@@ -3,7 +3,7 @@
     <div class="checkbox">
       <v-checkbox
         height="0"
-        color="#00897b"
+        color="#5b79ff"
         v-model="todo.completed"
         v-on:change="updateCompletedStatus"
       >
@@ -17,11 +17,15 @@
       <div class="todo-title">
         {{ todo.title }}
       </div>
-      <div class="priority">
-        <span class="label">Priority: </span>
-        <span>
-          {{ todo.priority }}
-        </span>
+      <div class="chip priority"
+        v-bind:class="todo.priority"
+      >{{ todo.priority }}
+      </div>
+      <div
+        v-for="category in todo.categories"
+        :key="category"
+        class="chip category"
+      >{{ category }}
       </div>
     </div>
 
@@ -67,13 +71,13 @@
               </v-btn>
               <v-btn
                 class="archive-btn"
-                color="#00897b"
+                color="#555"
                 @click="archiveTodo"
               >
-                Archive
+                Remove
               </v-btn>
             </div>
-            <div class="tip"><v-icon small class="info-icon">info</v-icon> You can restore archived To-Do's from the Archive page.</div>
+            <div class="tip"><v-icon small class="info-icon">info</v-icon> You can restore or perminently delete archived To-Do's from the Archive page.</div>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -153,23 +157,51 @@ export default {
   cursor: pointer;
 }
 
-.todo {
-    padding-top: 2px;
-}
-
 .todo-spacer {
-  flex-grow: 100;
+  flex-grow: 3;
 }
 
 .todo-title {
-  font-size: 18px;
+  font-size: 16px;
+  padding-top: 2px;
 }
 
 .due {
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1.1em;
   margin-right: 10px;
   min-width: 100px;
+}
+
+.chip {
+  display: inline-block;
+  border-radius: 10px;
+  line-height: 18px;
+  padding: 0 8px 0;
+  margin-right: 4px;
+}
+
+.priority {
+  margin-right: 4px;
+}
+
+.High {
+  background-color: rgb(206, 52, 52);
+  color: white;
+}
+
+.Normal {
+  background-color: rgb(42, 148, 130);
+  color: white;
+}
+
+.Low {
+  background-color: rgb(197, 197, 197);
+}
+
+.category {
+  background-color: rgba(177, 216, 204, 0.733);
+  padding: 0 7px 0;
 }
 
 .label {
@@ -179,7 +211,7 @@ export default {
 }
 
 .confirm-titlebar {
-  background-color: #00897b;
+  background-color: #555;
   color: white;
 }
 
@@ -193,6 +225,7 @@ export default {
 
 .tip {
   font-size: .9em;
+  padding: 0 50px;
 }
 
 .dialog-btns {

@@ -23,17 +23,25 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Dosis:200,400|Kanit:300,400,500,600,800');
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-color: #DFF1F0;
+  background-color: rgb(223, 223, 223);
 }
 
 html, body {
   margin: 0;
   padding: 0;
+}
+
+.panel-title {
+  font-family: 'Dosis';
+  font-weight: 400;
+  font-size: 1.9em
 }
 
 .v-content {

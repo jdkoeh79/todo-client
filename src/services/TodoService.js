@@ -1,7 +1,7 @@
 import Api from '@/services/Api'
 
 export default {
-  fetchTodos (userId) {
+  index (userId) {
     return Api().get('todos', {
       userId: userId
     })

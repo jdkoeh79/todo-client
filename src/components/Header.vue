@@ -1,6 +1,6 @@
 <template>
   <v-toolbar
-    class="teal darken-1"
+    color="#555"
     fixed
     dark>
     <v-toolbar-title>
@@ -10,7 +10,7 @@
         }"
         class="home"
         tag="span">
-        To-Do's
+        todo
       </router-link>
     </v-toolbar-title>
 
@@ -35,7 +35,7 @@
         flat
         v-if="$store.state.isUserLoggedIn"
         :to="{name: 'todos'}">
-          My Todo's
+          My Todos
       </v-btn>
 
       <v-btn
@@ -161,6 +161,8 @@ export default {
 <style scoped>
 .home {
   cursor: pointer;
+  font-family: 'Kanit';
+  font-size: 2em;
 }
 
 .avatar {
@@ -178,6 +180,12 @@ export default {
 }
 
 >>>.theme--light.v-list .v-list__tile--link:hover {
-  background-color: #dff1f0;
+  background-color: #dbdbdb;
+}
+
+>>>.v-btn {
+  font-size: 1.3em;
+  font-family: 'Dosis';
+  font-weight: 500;
 }
 </style>

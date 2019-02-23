@@ -3,7 +3,7 @@
 
     <v-checkbox
       height="0"
-      color="#00897b"
+      color="#5b79ff"
       :label="item.name"
       v-model="item.completed"
       v-on:change="updateCompletedStatus"
@@ -50,8 +50,8 @@ flex-grow: 1;
 }
 
 .item:hover {
-  border-top: 1px solid rgb(176, 212, 200);
-  border-bottom: 1px solid rgb(176, 212, 200);
+  border-top: 1px solid rgb(168, 168, 168);
+  border-bottom: 1px solid rgb(168, 168, 168);
   margin-top: -1px;
   margin-bottom: -1px;
 }
