@@ -25,12 +25,16 @@ import TodoService from '@/services/TodoService'
 
 export default {
   props: [
-    'todo',
-    'watchCount'
+    'todo'
   ],
   computed: {
     note () {
       return this.todo.note
+    }
+  },
+  data () {
+    return {
+      watchCount: 0
     }
   },
   watch: {

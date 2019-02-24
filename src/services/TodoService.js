@@ -34,6 +34,12 @@ export default {
       priority: todo.priority
     })
   },
+  updateCategories (todo) {
+    return Api().put('todo/categories', {
+      todoId: todo.id,
+      categories: todo.categories
+    })
+  },
   updateDueDate (todo) {
     return Api().put('todo/dueDate', {
       todoId: todo.id,

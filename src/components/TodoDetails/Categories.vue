@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import TodoService from '@/services/TodoService'
+
 export default {
   props: [
     'todo',
@@ -102,7 +104,7 @@ export default {
       // console.log('categoryCheck:', checked)
       return true
     },
-    updateCategory (category) {
+    async updateCategory (category) {
       category.inUse = !category.inUse
       if (category.inUse) {
         this.todo.categories.push(category.name)
@@ -111,12 +113,14 @@ export default {
         this.todo.categories = this.todo.categories.filter(name => name !== category.name)
         this.checkedArr = this.checkedArr.filter(name => name !== category.name)
       }
+      await TodoService.updateCategories(this.todo)
     },
-    unflagAllCategories () {
+    async unflagAllCategories () {
       this.categories.forEach((category, i) => {
         this.categories[i].inUse = false
       })
       this.todo.categories = []
+      await TodoService.updateCategories(this.todo)
     }
   }
 }

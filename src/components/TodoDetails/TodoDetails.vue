@@ -18,7 +18,6 @@
 
             <priority
               :todo="todo"
-              :priorities="priorities"
             />
 
             <categories
@@ -55,7 +54,6 @@
 
       <notes
         :todo="todo"
-        :watchCount="0"
       />
 
       <item
@@ -136,12 +134,7 @@ export default {
     return {
       createdAt: null,
       enterNewItem: false,
-      newItem: '',
-      priorities: [
-        'Low',
-        'Normal',
-        'High'
-      ]
+      newItem: ''
     }
   },
   methods: {

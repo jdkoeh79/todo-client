@@ -38,9 +38,17 @@ import TodoService from '@/services/TodoService'
 
 export default {
   props: [
-    'todo',
-    'priorities'
+    'todo'
   ],
+  data () {
+    return {
+      priorities: [
+        'Low',
+        'Normal',
+        'High'
+      ]
+    }
+  },
   methods: {
     async updatePriority (priority) {
       this.todo.priority = priority
