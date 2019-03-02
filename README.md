@@ -1,26 +1,15 @@
-# todo-client
+## Todo App frontend - Vue.JS
 
-## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
 ```
 npm start
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+##### Once the back-end is up, login as:
 
-### Run your tests
-```
-npm run test
-```
+username: test@gmail.com 
 
-### Lints and fixes files
-```
-npm run lint
-```
+password: password

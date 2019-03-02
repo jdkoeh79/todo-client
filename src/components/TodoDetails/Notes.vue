@@ -27,14 +27,14 @@ export default {
   props: [
     'todo'
   ],
-  computed: {
-    note () {
-      return this.todo.note
-    }
-  },
   data () {
     return {
       watchCount: 0
+    }
+  },
+  computed: {
+    note () {
+      return this.todo.note
     }
   },
   watch: {
